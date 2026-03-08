@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the AI Recipe Tester module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function ai_recipe_tester_schema(): array {
+  $schema['ai_recipe_tester_runs'] = [
+    'description' => 'Stores AI Recipe Tester runs (prompt, raw output, canonical YAML).',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'provider_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ],
+      'model_id' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ],
+      'user_prompt' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+      'raw_llm_output' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+      'extracted_yaml' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+      'canonical_yaml' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+      'canonical_json' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+      'status' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 'ok',
+      ],
+      'error_message' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+      'created' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'uid' => ['uid'],
+      'created' => ['created'],
+      'status' => ['status'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Add table for already-installed sites.
+ */
+function ai_recipe_tester_update_9001(): void {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('ai_recipe_tester_runs')) {
+    $spec = ai_recipe_tester_schema();
+    $schema->createTable('ai_recipe_tester_runs', $spec['ai_recipe_tester_runs']);
+  }
+}

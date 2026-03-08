@@ -1,0 +1,7 @@
+name: 'AI Recipe Tester'
+type: module
+description: 'A micro-module to test Form API, Routing, ConfigFactory, and AI generation.'
+package: Custom
+core_version_requirement: ^10 || ^11
+dependencies:
+  - ai:ai

@@ -1,0 +1,7 @@
+ai_recipe_tester.test_form:
+  path: '/admin/config/development/ai-recipe'
+  defaults:
+    _form: '\Drupal\ai_recipe_tester\Form\RecipeTesterForm'
+    _title: 'AI Recipe Context Tester'
+  requirements:
+    _permission: 'administer site configuration'
